@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import CreditSimulationView
+from .views import credit_simulation_api_view
 
 urlpatterns = [
-    path('simulate/', CreditSimulationView.as_view(), name='simulate_credit'),
+    path('simulate/', credit_simulation_api_view, name='simulate_credit'),
 ]

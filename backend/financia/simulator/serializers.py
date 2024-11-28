@@ -1,22 +1,30 @@
 from rest_framework import serializers
 from .models import CreditSimulation
+from decimal import Decimal
+from typing import Dict, Any
 
 class CreditSimulationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreditSimulation
         fields = ['loan_amount', 'interest_rate', 'term_months']
-    
-    def validate_loan_amount(self, value):
-        if value <= 0:
-            raise serializers.ValidationError("El monto del préstamo debe ser mayor a cero.")
-        return value
+        extra_kwargs = {
+            'loan_amount': {'required': True},
+            'interest_rate': {'required': True},
+            'term_months': {'required': True}
+        }
 
-    def validate_interest_rate(self, value):
-        if value < 0 or value > 100:
-            raise serializers.ValidationError("La tasa de interés debe estar entre 0 y 100%.")
-        return value
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Validación a nivel de objeto"""
+        # Validamos que el monto del préstamo sea razonable
+        if data['loan_amount'] > Decimal('10000000'):
+            raise serializers.ValidationError(
+                "El monto del préstamo no puede superar los 10 millones."
+            )
 
-    def validate_term_months(self, value):
-        if value <= 0 or value > 360:
-            raise serializers.ValidationError("El plazo debe ser mayor a 0 y no superar 360 meses (30 años).")
-        return value
+        # Validamos que la tasa de interés sea razonable
+        if data['interest_rate'] > Decimal('50'):
+            raise serializers.ValidationError(
+                "La tasa de interés parece demasiado alta. Máximo permitido: 50%"
+            )
+
+        return data
