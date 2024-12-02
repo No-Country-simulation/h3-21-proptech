@@ -4,10 +4,11 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
+import {MainPage} from "./modules/home/pages/main"
 import { RegisterPage } from "./modules/auth/pages/RegisterPage";
 import { LoginPage } from "./modules/auth/pages/LoginPage";
 import { DashboardPage } from "./modules/dashboard/pages/DashboardPage";
+
 
 function App() {
   const routes = [
@@ -23,6 +24,11 @@ function App() {
       path: "/dashboard",
       element: <DashboardPage />,
     },
+     {
+      path:"/main",
+      element:<MainPage />,
+     },
+
     {
       path: "*",
       element: <Navigate to="/login" replace />,
@@ -39,5 +45,4 @@ function App() {
     </Router>
   );
 }
-
-export default App;
+export default App; 

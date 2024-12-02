@@ -5,10 +5,14 @@ export default {
     ],
     theme: {
       extend: {
+        fontFamily:{
+          nunito:["Nunito","sans-serif"],
+        },
         colors: {
           primary: {
             DEFAULT: '#1C768F', // cyan-800
             dark: '#032539', // cyan-950
+            purple:'#693196',
           },
           text: {
             primary: '#1F2937', // gray-800
