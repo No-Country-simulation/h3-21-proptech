@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+/*import React, { useState, useEffect } from "react";
 
 const CreditSimulator = () => {
   // Estados para manejar el monto, plazo y cuota calculada
@@ -29,8 +29,8 @@ const CreditSimulator = () => {
 
   return (
     <div className="bg-[#E0F2F1] py-8 px-4 md:px-16 flex flex-col md:flex-row items-center justify-between">
-      {/* Sección izquierda: Título y descripción */}
-      <div className="max-w-md mb-8 md:mb-0">
+      {/* Sección izquierda: Título y descripción *//*}
+      /*<div className="max-w-md mb-8 md:mb-0">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
           ¿Querés acceder a un crédito y querés saber cuánto vas a pagar?
         </h2>
@@ -39,8 +39,8 @@ const CreditSimulator = () => {
         </p>
       </div>
 
-      {/* Sección derecha: Formulario */}
-      <div className="  rounded-lg p-6 max-w-sm w-full">
+      {/* Sección derecha: Formulario *//*}
+     /* <div className="  rounded-lg p-6 max-w-sm w-full">
       <h1 className="text-gray-600">
           Carga los datos para simular tu crédito
         </h1>
@@ -77,8 +77,8 @@ const CreditSimulator = () => {
           </button>
         </form>
 
-        {/* Mostrar el resultado de la cuota */}
-        {cuota && (
+        {/* Mostrar el resultado de la cuota *//*}
+        /*{cuota && (
           <div className="mt-4 text-center">
             <p className="text-lg text-gray-800">
               Tu cuota mensual será de:{" "}
@@ -91,4 +91,4 @@ const CreditSimulator = () => {
   );
 };
 
-export default CreditSimulator;
+export default CreditSimulator;*/
