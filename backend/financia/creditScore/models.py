@@ -10,9 +10,11 @@ from .constants import (
     MAX_DEBT_TO_INCOME_RATIO, RISK_CATEGORIES
 )
 from .exceptions import InvalidIncomeError, InvalidDebtRatioError
+import logging
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
-
 
 class CreditScore(models.Model):
     """
@@ -26,6 +28,8 @@ class CreditScore(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='credit_score',
+        null=True,  # Permite que el campo user sea nulo
+        blank=True,
         help_text="Usuario asociado al puntaje crediticio."
     )
     
@@ -34,28 +38,6 @@ class CreditScore(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))],
         help_text="Ingreso mensual del usuario."
-    )
-    
-    requested_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        validators=[MinValueValidator(Decimal('0.01'))],
-        help_text="Monto solicitado por el usuario."
-    )
-    
-    monthly_interest_rate = models.DecimalField(
-        max_digits=5,
-        decimal_places=4,
-        validators=[
-            MinValueValidator(Decimal('0.0001')),
-            MaxValueValidator(Decimal('100'))
-        ],
-        help_text="Tasa de interés mensual expresada como porcentaje."
-    )
-    
-    term_months = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(360)],
-        help_text="Plazo del financiamiento en meses."
     )
     
     credit_history = models.BooleanField(
@@ -111,13 +93,23 @@ class CreditScore(models.Model):
             raise InvalidIncomeError("El ingreso debe ser mayor a cero.")
 
         score = self._calculate_base_score()
+        logger.info(f"Puntaje base: {score}")
+
         score = self._adjust_for_income(score)
+        logger.info(f"Puntaje después de ajuste por ingresos: {score}")
+
         score = self._adjust_for_debt_to_income_ratio(score)
+        logger.info(f"Puntaje después de ajuste por relación deuda/ingreso: {score}")
+
         score = self._adjust_for_credit_history(score)
+        logger.info(f"Puntaje después de ajuste por historial crediticio: {score}")
+
         score = self._adjust_for_active_financings(score)
+        logger.info(f"Puntaje después de ajuste por financiamientos activos: {score}")
 
         # Normalización del puntaje final
         self.score = self._normalize_score(score)
+        logger.info(f"Puntaje normalizado: {self.score}")
         self.save()
         return self.score
 
@@ -151,7 +143,10 @@ class CreditScore(models.Model):
         Returns:
             int: Puntaje ajustado según la relación deuda/ingreso.
         """
-        debt_to_income_ratio = self.requested_amount / self.income
+        total_debt = sum(financing.amount for financing in self.active_financings.all())
+        if total_debt == 0:
+            return score
+        debt_to_income_ratio = total_debt / self.income
         if debt_to_income_ratio > MAX_DEBT_TO_INCOME_RATIO:
             raise InvalidDebtRatioError(
                 f"La relación deuda/ingreso ({debt_to_income_ratio:.2f}) es demasiado alta."
@@ -230,17 +225,13 @@ class CreditScore(models.Model):
                 }
         return None
 
-    def calculate_monthly_payment(self) -> Decimal:
+    def adjust_for_payment_behavior(self, financing: Financing) -> None:
         """
-        Calcula el pago mensual basado en el monto solicitado y la tasa de interés.
+        Ajusta el puntaje basado en el comportamiento de pago en un financiamiento.
 
-        Returns:
-            Decimal: Monto del pago mensual.
+        Args:
+            financing (Financing): Instancia de un financiamiento activo.
         """
-        rate = self.monthly_interest_rate / Decimal('100')
-        numerator = rate * (1 + rate) ** self.term_months
-        denominator = (1 + rate) ** self.term_months - 1
-        return self.requested_amount * (numerator / denominator)
-
-    def __str__(self):
-        return f"Puntaje crediticio de {self.user.username}: {self.score}"
+        adjustment = self._adjust_for_financing_payments(financing)
+        self.score += adjustment
+        self.save()

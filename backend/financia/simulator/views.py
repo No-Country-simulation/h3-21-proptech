@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from .serializers import CreditSimulationSerializer
 from .utils import calculate_credit_details
@@ -23,6 +24,7 @@ from drf_yasg.utils import swagger_auto_schema
     },
 )
 @api_view(['POST'])
+@csrf_exempt
 def credit_simulation_api_view(request) -> Response:
     """
     Endpoint para calcular simulaciones de crédito.

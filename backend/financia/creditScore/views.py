@@ -3,31 +3,38 @@ from django.http import HttpResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.core.cache import cache
 from .models import CreditScore
 from .serializers import CreditScoreSerializer
 from .exceptions import CreditScoreError
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CreditScoreViewSet(viewsets.ModelViewSet):
     """
     ViewSet para manejar las operaciones CRUD de CreditScore
     """
     serializer_class = CreditScoreSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """Retorna solo los credit scores del usuario actual"""
         if self.request.user.is_authenticated:
             return CreditScore.objects.filter(user=self.request.user)
         else:
-            return CreditScore.objects.none() 
+            return CreditScore.objects.all()
 
     def perform_create(self, serializer):
-        """Asigna el usuario actual al crear un nuevo credit score"""
-        serializer.save(user=self.request.user)
+        """Crea un nuevo credit score sin asignar un usuario específico"""
+        # Si el usuario no está autenticado, no se asigna el usuario
+        if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+        else:
+            serializer.save()
 
     @swagger_auto_schema(
         operation_description="Calcula el puntaje crediticio del usuario. El puntaje se calcula y se guarda en cache por 1 hora.",
@@ -64,11 +71,13 @@ class CreditScoreViewSet(viewsets.ModelViewSet):
             return Response({**serializer.data, "cache_message": cache_message})
             
         except CreditScoreError as e:
+            logger.error(f"Error en los datos del puntaje crediticio: {e}")
             return Response(
                 {'error': str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
         except Exception as e:
+            logger.error(f"Error interno del servidor: {e}")
             return Response(
                 {'error': 'Error interno del servidor'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR

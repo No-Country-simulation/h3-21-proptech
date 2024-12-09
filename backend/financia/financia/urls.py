@@ -42,6 +42,7 @@ urlpatterns = [
     path('simulator/', include('simulator.urls')),
     path('', include('creditScore.urls')),
     path('', include('financing.urls')),
+    path('', include('user.urls')),
 
      # Documentación API
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

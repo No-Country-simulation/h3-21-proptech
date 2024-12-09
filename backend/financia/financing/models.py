@@ -86,6 +86,10 @@ class Financing(models.Model):
             principal_payment = _round_decimal(monthly_payment - interest_payment)
             balance = _round_decimal(balance - principal_payment)
 
+            # Ajustar el balance final para evitar valores negativos
+            if month == self.term_months:
+                balance = Decimal('0.00')
+
             schedule.append({
                 "month": month,
                 "monthly_payment": monthly_payment,

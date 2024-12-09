@@ -14,8 +14,20 @@ class PaymentSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """
         Validación a nivel de objeto.
-        - Validar que el monto del pago no sea mayor al saldo restante.
         """
+        # Validar que el monto solicitado no sea mayor a 3 veces el ingreso
+        if data['loan_amount'] > data['income'] * 3:
+            raise serializers.ValidationError(
+                "El monto solicitado no puede ser mayor a 3 veces el ingreso mensual"
+            )
+
+        # Validar tasa de interés razonable
+        #if data['anual_interest_rate'] > Decimal('5'):
+            #raise serializers.ValidationError(
+                #"La tasa de interés mensual parece demasiado alta (máximo 5%)"
+            #)
+
+        # Validar que el monto del pago no sea mayor al saldo restante
         financing = data['financing']
         remaining_balance = financing.calculate_payment_schedule()[-1]['remaining_balance']
 

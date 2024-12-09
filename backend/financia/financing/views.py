@@ -1,12 +1,12 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import Financing, Payment
 from .serializers import FinancingSerializer, PaymentSerializer, serializers
-
+from decimal import Decimal
 
 class FinancingViewSet(viewsets.ModelViewSet):
     """
@@ -14,7 +14,7 @@ class FinancingViewSet(viewsets.ModelViewSet):
     """
     queryset = Financing.objects.all()
     serializer_class = FinancingSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @swagger_auto_schema(
         operation_description="Crea un nuevo financiamiento para el usuario autenticado.",
@@ -79,7 +79,6 @@ class FinancingViewSet(viewsets.ModelViewSet):
         }
     )
     @action(detail=True, methods=['get'])
-    @action(detail=True, methods=['get'])
     def van_and_tir(self, request, pk=None):
         """
         Endpoint para calcular el VAN y la TIR de un financiamiento.
@@ -105,7 +104,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     """
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         """

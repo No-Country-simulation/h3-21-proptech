@@ -3,9 +3,9 @@ from rest_framework.routers import DefaultRouter
 from .views import FinancingViewSet, PaymentViewSet
 
 router = DefaultRouter()
-router.register(r'financings', FinancingViewSet)
-router.register(r'payments', PaymentViewSet)
+router.register(r'financings', FinancingViewSet, basename='financing')
+router.register(r'payments', PaymentViewSet, basename='payment')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/v1/', include(router.urls)),
 ]

@@ -18,7 +18,15 @@ def update_credit_score(user, adjustment_function, *args, **kwargs):
     """
     try:
         with transaction.atomic():  # Garantiza que los cambios se hagan de forma atómica.
-            credit_score, _ = CreditScore.objects.get_or_create(user=user)
+            # Asegurar que el CreditScore se crea con valores predeterminados
+            credit_score, created = CreditScore.objects.get_or_create(
+                user=user,
+                defaults={'income': 0}  # Agregar un valor predeterminado para evitar errores
+            )
+            
+            if created:
+                logger.info(f"CreditScore creado para el usuario {user.username} con valores iniciales.")
+
             adjustment_function(credit_score, *args, **kwargs)
             credit_score.save()
             logger.info(f"CreditScore actualizado para el usuario {user.username}: {credit_score.score}")
@@ -41,4 +49,3 @@ def update_credit_score_on_payment(sender, instance, **kwargs):
     financing = instance.financing
     logger.info(f"Se ha registrado un pago para el usuario: {financing.user.username}")
     update_credit_score(financing.user, lambda cs: cs.adjust_for_payment_behavior(financing))
-
