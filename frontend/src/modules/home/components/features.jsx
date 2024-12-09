@@ -18,6 +18,9 @@ const App = () => {
           "Proceso sencillo y rápido",
         ]}
         onButtonClick={handleFinancingRequest}
+        descriptionClass="text-lg" // Tamaño de la letra de la descripción
+        imageClass="ml-4" // Mueve la imagen a la derecha
+
       />
     </div>
   );

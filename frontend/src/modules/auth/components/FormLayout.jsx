@@ -4,7 +4,7 @@ import lines from "../../../assets/lines.svg";
 export const FormLayout = ({ form }) => {
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 flex-shrink-0h-72 bg-gradient-to-b from-teal-600 to-cyan-950 static">
+      <div className="w-1/2 flex-shrink-0h-72 bg-gradient-to-b from-[#693196] to-cyan-950 static">
         <div className="absolute bottom-0 left-0">
           <img
             src={lines}

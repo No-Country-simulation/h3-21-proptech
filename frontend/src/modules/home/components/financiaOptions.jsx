@@ -4,18 +4,21 @@ const FinanciaSection = ({ image, title, description, features = [], onButtonCli
         {/* Imagen */}
         <div className="mb-8 md:mb-0 md:mr-8">
           <h2 className="text-3xl font-bold text-black  mb-4">{title}</h2>
-          <img
-            src={image}
-            alt="Plano arquitectónico"
-            className="rounded-lg shadow-lg border-4 max-w-sm w-full"
-          />
+
+          <div className="ml-10 ">
+            <img
+              src={image}
+              alt="Plano arquitectónico"
+              className="rounded-lg shadow-lg max-w-sm w-full"
+            />
+          </div>
         </div>
 
         {/* Texto y características */}
         <div className="max-w-md">
-          <p className="text-black mb-6">{description}</p>
+          <p className="text-black mb-6 text-lg">{description}</p>
 
-          <ul className="space-y-4 mb-6">
+          <ul className="space-y-4 mb-6 text-lg">
             {features.map((feature, index) => (
               <li key={index} className="flex items-start">
                 <img
@@ -34,6 +37,7 @@ const FinanciaSection = ({ image, title, description, features = [], onButtonCli
           >
             Solicitar financiamiento
           </button>
+          
         </div>
       </section>
     );

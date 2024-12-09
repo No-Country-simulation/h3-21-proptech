@@ -3,7 +3,7 @@ import { registerSchema } from "../schemas/validationSchemas";
 import { FormInput } from "./FormInput";
 import { Popup } from "./Popup";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/logotipo.svg";
+import logo from "../../../assets/LogoFinancia.svg";
 import { faUser, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
 export const RegisterForm = () => {
@@ -84,7 +84,7 @@ export const RegisterForm = () => {
 
           <button
             type="submit"
-            className="w-button-large bg-primary text-white py-buttonPadding rounded-3xl hover:bg-primary-dark transition duration-300"
+            className="w-button-large bg-purple-700 text-white py-buttonPadding rounded-3xl hover:bg-purple-950 transition duration-300"
           >
             Registrarme
           </button>

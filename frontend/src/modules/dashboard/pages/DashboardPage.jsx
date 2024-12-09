@@ -47,7 +47,7 @@ export const DashboardPage = () => {
     <div className="flex flex-col h-screen">
       <Navbar />
       <div className="flex flex-1">
-        <Sidebar setActivePage={setActivePage} />
+        <Sidebar setActivePage={setActivePage} />*
         <main className="flex-1 pl-4 pr-4 bg-white">{renderContent()}</main>
       </div>
     </div>
