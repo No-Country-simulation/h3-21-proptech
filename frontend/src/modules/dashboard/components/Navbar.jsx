@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { getUserName } from "../utils/getUserName";
+//import { getUserName } from "../utils/getUserName";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../../assets/logotipo.svg";
 
 export const Navbar = () => {
-  const userName = getUserName();
+  //const userName = getUserName();
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -25,7 +25,7 @@ export const Navbar = () => {
           />
         </div>
 
-        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold ">{`¡Bienvenido, ${userName}!`}</h1>
+        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold ">{`¡Bienvenido, Anthony!`}</h1>
 
         <div className="flex justify-center items-center">
           <button type="button" className="relative">

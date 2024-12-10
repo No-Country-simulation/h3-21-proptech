@@ -7,7 +7,7 @@ import homeIcon2 from "../../../assets/h-icon2.svg";
 import grafIcon2 from "../../../assets/g-icon2.svg";
 
 export const Sidebar = ({ setActivePage }) => {
-  const [activeIcon, setActiveIcon] = useState("graphics");
+  const [activeIcon, setActiveIcon] = useState("calculator");
 
   const handleIconClick = (page) => {
     setActivePage(page);
@@ -16,17 +16,17 @@ export const Sidebar = ({ setActivePage }) => {
 
   return (
     <aside className="left-0 w-1/7 top-0 h-full flex items-center">
-      <div className="bg-red-200 w-300 rounded-r-lg">
+      <div className="border-2 border-purple-700 text-purple-700 py-2 px-4 ">
         <ul>
           <li
             className={`py-8 px-6 items-center justify-center cursor-pointer  ${
               activeIcon === "home" ? "text-red-500" : ""
             }`}
-            onClick={() => handleIconClick("graphics")}
+            onClick={() => handleIconClick("calculator")}
           >
             <img
-              src={activeIcon === "graphics" ? homeIcon2 : homeIcon}
-              alt="Graphics"
+              src={activeIcon === "calculator" ? homeIcon2 : homeIcon}
+              alt="Calculator"
               className="h-7 w-7"
             />
           </li>
@@ -35,11 +35,11 @@ export const Sidebar = ({ setActivePage }) => {
             className={`py-8 px-6 items-center justify-center cursor-pointer  ${
               activeIcon === "graphic" ? "text-blue-500" : ""
             }`}
-            onClick={() => handleIconClick("finance")}
+            onClick={() => handleIconClick("ToggleSection")}
           >
             <img
-              src={activeIcon === "finance" ? grafIcon2 : grafIcon}
-              alt="Finance"
+              src={activeIcon === "ToggleSection" ? grafIcon2 : grafIcon}
+              alt="ToggleSection"
               className="h-7 w-7"
             />
           </li>

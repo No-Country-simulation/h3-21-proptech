@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import  SimulatorPage  from "./modules/Dashboard-cuotas/pages/SimulatorPage.tsx";
 import {MainPage} from "./modules/home/pages/main"
 import { RegisterPage } from "./modules/auth/pages/RegisterPage";
 import { LoginPage } from "./modules/auth/pages/LoginPage";
@@ -65,7 +66,10 @@ function App() {
       path: "/financing", 
       element: <FinancingComponent />,
     },
-    
+    {
+      path:"/simulator",
+      element: <SimulatorPage/>,
+     },
 
     {
       path: "*",

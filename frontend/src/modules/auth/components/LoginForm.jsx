@@ -1,13 +1,17 @@
 import { useCustomFormik } from "../hooks/useCustomFormik";
 import { loginSchema } from "../schemas/validationSchemas";
-
+import { Link } from "react-router-dom";
 import { FormInput } from "./FormInput";
 import { Popup } from "./Popup";
-import { Link } from "react-router-dom";
-import logo from "../../../assets/logotipo.svg";
+import logo from "../../../assets/LogoFinancia.svg";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate("/simulator"); // Redirige al simulador
+  };
   const {
     handleSubmit,
     handleChange,
@@ -40,10 +44,9 @@ export const LoginForm = () => {
           className="max-w-md w-form-content bg-white space-y-4"
         >
           <div>
-            <h3 className="text-heading font-bold text-text-primary">
-              Bienvenido
+            <h3 className="text-heading font-bold text-text-primary ml-10">
+              Accede a tu Cuenta
             </h3>
-            <p className="text-body text-text-secondary">Accede a tu Cuenta</p>
           </div>
 
           <FormInput
@@ -78,14 +81,15 @@ export const LoginForm = () => {
 
           <div className="w-full flex justify-between">
             <button
-              type="submit"
-              className="w-button-large bg-primary text-white py-buttonPadding rounded-3xl hover:bg-primary-dark transition duration-300"
+              onClick={handleLogin}
+              className="w-button-large bg-purple-700 text-white py-buttonPadding rounded-3xl hover:bg-purple-950 transition duration-300"
             >
               Ingresar
             </button>
+
             <Link
               to="/register"
-              className="w-button-small flex justify-center items-center text-center border border-primary text-primary mx-2 py-buttonPadding rounded-3xl hover:bg-primary-dark hover:text-white hover:border-primary-dark transition duration-300"
+              className="w-button-small flex justify-center items-center text-center border border-purple-700  text-black mx-2 py-buttonPadding rounded-3xl hover:bg-purple-950 hover:text-white hover:border-purple-950 transition duration-300"
             >
               Regístrate
             </Link>
